@@ -3,18 +3,16 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 const app = express();
-//const url = process.env.DATABASE_URI;
-const url = 'mongodb+srv://admin:adminPassword123@weddingdb.ubg6zlf.mongodb.net/?appName=WeddingDB';
+const url = process.env.DATABASE_URI;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const PORT = process.env.PORT || 5000;
 
-// const emailUser = process.env.NEXT_PUBLIC_EMAIL_USER;
-// const emailPass = process.env.NEXT_PUBLIC_EMAIL_PASS;
-const emailUser = 'jakob.dunlap65@gmail.com';
-const emailPass = 'bjaurbaatrazlkbj';
+const emailUser = process.env.NEXT_PUBLIC_EMAIL_USER;
+const emailPass = process.env.NEXT_PUBLIC_EMAIL_PASS;
+const siteOwnerEmail = process.env.NEXT_PUBLIC_OWNER_EMAIL;
 
 // Schema for guests who fill out the form
 const guestSchema = new Schema({
@@ -163,7 +161,7 @@ app.post("/form", async (req, res) => {
     console.log(`Attempting to send notification email to site owner"`);
     await transporter.sendMail({
       from: 'MyWebsite',
-      to: 'jakob_dunlap@outlook.com',
+      to: siteOwnerEmail,
       subject: 'New guest has RSVPd',
       html: `<h1>Hi how are you</h1><br><p>${nameFromForm} has RSVP'd</p>`
     }).then(() => {
