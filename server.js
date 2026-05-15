@@ -71,9 +71,6 @@ mongoose.connect(url)
     process.exit(1);
   });
 
-//LOG SECRET
-console.log(emailUser);
-
 // Debug any errors with the Email server
 transporter.verify((error, success) => {
   if (error) {
@@ -116,7 +113,7 @@ app.get('/data', async (req, res) => {
     resultString = resultString.replaceAll(/,"_id":".{24}"/g, ``);
     resultString = resultString.replaceAll(`{"additionalGuestName":`, `Additional Guest Name: `);
     resultString = resultString.replaceAll(`},Additional Guest Name:`, `\n\t\t\t\t Additional Guest Name: `);
-    resultString = resultString.replaceAll(`,Guest Name`, `\n\nGuest Name`);
+    resultString = resultString.replaceAll(`,Guest Name`, `\n\n-------------------------------------------------\n\nGuest Name`);
     resultString = resultString.replaceAll(`[`, ``);
     resultString = resultString.replaceAll(`}`, ``);
     resultString = resultString.replaceAll(`}]`, ``);
@@ -135,6 +132,7 @@ app.get('/data', async (req, res) => {
   }
 });
 
+// Recieves and saves guest data from RSVP form page
 app.post("/form", async (req, res) => {
   const formData = req.body;
   const emailAddressFromForm = formData.email;
@@ -142,7 +140,7 @@ app.post("/form", async (req, res) => {
   const Guest = mongoose.model("Guest", guestSchema);
   const newItem = new Guest(formData);
   try {
-    await newItem.save(); //MAYBE MOVE THIS LATER IN CODE, MAYBE PUT 'await' BEFORE 'transporter.sendEmail'
+    await newItem.save();
 
     // Send confirmation email
     console.log(`Attempting to send confirmation email to "${emailAddressFromForm}"`);
@@ -153,12 +151,12 @@ app.post("/form", async (req, res) => {
       html: '<h1>Hi how are you</h1><br><p>subtext</p>'
     }).then(() => {
       console.log('Email sent');
-    }).catch(err => {  //MAYBE REMOVE THIS?
+    }).catch(err => {
       console.error(err);
     });
 
     // Send email to site owner
-    console.log(`Attempting to send notification email to site owner"`);
+    console.log(`Attempting to send notification email to site owner`);
     await transporter.sendMail({
       from: 'MyWebsite',
       to: siteOwnerEmail,
@@ -166,7 +164,7 @@ app.post("/form", async (req, res) => {
       html: `<h1>Hi how are you</h1><br><p>${nameFromForm} has RSVP'd</p>`
     }).then(() => {
       console.log('Email sent');
-    }).catch(err => {  //MAYBE REMOVE THIS?
+    }).catch(err => {
       console.error(err);
     });
 
