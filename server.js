@@ -147,8 +147,28 @@ app.post("/form", async (req, res) => {
     await transporter.sendMail({
       from: 'MyWebsite',
       to: emailAddressFromForm,
-      subject: 'ya got mail',
-      html: '<h1>Hi how are you</h1><br><p>subtext</p>'
+      subject: 'Julia & Jake - RSVP Confirmation',
+      html: `
+        <html style="background-color:#DDDDDD;">
+          <div style="font-family:Century, Georgia, Times, serif;display:block;margin:auto;text-align:center;">
+            <h1 style="font-size:24pt;">Thank You!</h1>
+            <p style="font-size:13pt;">
+              We received the information you provided on the form - if you need to change
+              any of the information you provided, including whether you will be
+              attending, email Jake at jakob_dunlap@outlook.com and he will make sure that
+              the bride-and-groom-to-be have all the right info!
+            </p>
+            <img src="cid:email-image" style="width:80wv;" alt="For screen readers: Itinerary is as follows. The wedding ceremony is at 3pm central. Cocktail hour is at 4pm. Reception is at 5pm. The ceremeony and reception will be held at 16140 Hollingsworth Rd, Basehor, Kansas 66007"/>
+          </div>
+        </html>
+        `,
+      attachments: [
+        {
+          filename: 'email-image.jpg',
+          path: './email-image.jpg',
+          cid: 'email-image'
+        }
+      ]
     }).then(() => {
       console.log('Email sent');
     }).catch(err => {
@@ -161,7 +181,7 @@ app.post("/form", async (req, res) => {
       from: 'MyWebsite',
       to: siteOwnerEmail,
       subject: 'New guest has RSVPd',
-      html: `<h1>Hi how are you</h1><br><p>${nameFromForm} has RSVP'd</p>`
+      html: `<h1>This email is to notify you of a new wedding guest RSVP</h1><br><br><p>${nameFromForm} has RSVP'd</p>`
     }).then(() => {
       console.log('Email sent');
     }).catch(err => {
