@@ -155,8 +155,8 @@ app.post("/form", async (req, res) => {
             <p style="font-size:13pt;">
               We received the information you provided on the form - if you need to change
               any of the information you provided, including whether you will be
-              attending, email Jake at jakob_dunlap@outlook.com and he will make sure that
-              the bride-and-groom-to-be have all the right info!
+              attending, email Jake at jakob_dunlap@outlook.com so
+              we have all the right info!
             </p>
             <img src="cid:email-image" style="width:80wv;" alt="For screen readers: Itinerary is as follows. The wedding ceremony is at 3pm central. Cocktail hour is at 4pm. Reception is at 5pm. The ceremeony and reception will be held at 16140 Hollingsworth Rd, Basehor, Kansas 66007"/>
           </div>
@@ -181,7 +181,7 @@ app.post("/form", async (req, res) => {
       from: 'MyWebsite',
       to: siteOwnerEmail,
       subject: 'New guest has RSVPd',
-      html: `<h1>This email is to notify you of a new wedding guest RSVP</h1><br><br><p>${nameFromForm} has RSVP'd</p>`
+      html: `<h1>This email is to notify you of a new wedding guest RSVP</h1><br><br><h2>${nameFromForm} has RSVP'd</h2>`
     }).then(() => {
       console.log('Email sent');
     }).catch(err => {
